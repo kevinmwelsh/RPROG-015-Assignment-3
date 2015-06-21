@@ -1,0 +1,18 @@
+Andrew H NicholsSignature Track· 14 hours ago 
+OK, thanks.  What is a good command to extract a new dataframe from an existing one based on the highest numeric value in one of its columns (for each character group in another column)?  I don't remember that from the lectures.  Thanks for the hint.
+0votes received.· flag
+Catalino AlfafaraCOMMUNITY TA· 13 hours ago 
+
+There are many approaches (some are faster than others), but if you want to make use of what you learned in the week 3 lectures, you might want to try the "split-apply-combine" approach:
+
+(1) read the file, then subset  from the read data.frame, the desired columns  for state, hospital and outcome (say, this is df1)
+
+(2) check invalid entries
+(3) split df1 by state (say, this is stored as an object "split.df1", which is a list of data.frames by state.
+
+(4) sort each "state data.frame" in the "data.frame list" (df.split) by outcome then by hospital (anonymous function within lapply() will be useful). Make sure oucome is numeric and hospital is character.
+This tutorial on sorting data.frames may be useful:
+http://www.dummies.com/how-to/content/how-to-sort-data-frames-in-r.html
+
+(5) evaluate num and get the num-th hospital from each data.frame (if you use lapply() the result will be a list of num-th hospitals per state)
+(6) convert list of num-th hospital into a data.frame (you can use rbind()) and return the data.frame
